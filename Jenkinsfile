@@ -10,6 +10,7 @@ pipeline {
     
     stage('Compile') {
       steps {
+        sh 'export GO111MODULE=on'
         sh 'go build'
       }
     }
