@@ -1,0 +1,42 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Resources:
+  JenkinsMasterInstance:
+    Type: "AWS::EC2::Instance"
+    Properties:
+      ImageId: ami-024e6efaf93d85776
+      InstanceType: t2.micro
+      KeyName: jenkins_key_pair
+      SecurityGroupIds:
+        - sg-0477d4d9ff00b66f9
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          # Instalar Jenkins
+          wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -
+          sudo sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
+          sudo apt-get update
+          sudo apt-get install -y jenkins
+      Tags:
+        - Key: Name
+          Value: JenkinsMasterInstance
+
+  JenkinsSlaveInstance:
+    Type: "AWS::EC2::Instance"
+    Properties:
+      ImageId: ami-024e6efaf93d85776
+      InstanceType: t2.micro
+      KeyName: jenkins_key_pair
+      SecurityGroupIds:
+        - sg-097ea606c0ebf91d3
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          # Instalar Docker
+          sudo apt-get update
+          sudo apt-get install -y docker.io
+          sudo usermod -a -G docker jenkins
+      Tags:
+        - Key: Name
+          Value: JenkinsSlaveInstance
+        - Key: JenkinsSlave
+          Value: "true"
