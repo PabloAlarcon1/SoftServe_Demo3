@@ -1,3 +1,3 @@
-module github.com/PabloAlarcon1/myapp
+module github.com/PabloAlarcon1/SoftServe_Demo3/myapp
 
-go 1.20
+go 1.20.4

@@ -10,7 +10,7 @@ pipeline {
     stage('Compile') {
       steps {
         sh 'export GO111MODULE=on'
-        sh 'go build'
+        sh 'go build -o myapp'
       }
     }
 
@@ -22,7 +22,7 @@ pipeline {
 
     stage('Execute') {
       steps {
-        sh 'go run main.go'
+        sh './myapp'
       }
     }
 
